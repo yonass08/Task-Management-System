@@ -1,3 +1,5 @@
+using FluentValidation.Results;
+
 namespace TaskManagementSystem.Application.Exceptions;
 
 public class ValidationException : ApplicationException

@@ -3,11 +3,11 @@ using TaskManagementSystem.Application.Contracts.Persistence;
 
 namespace TaskManagementSystem.Application.Features.Task.DTO.Validators;
 
-public class CreateUserTaskDTOValidator : BaseUserTaskValidator<CreateUserTaskDTO>
+public class CreateUserTaskDtoValidator : BaseUserTaskValidator<CreateUserTaskDto>
 {
     private readonly IUserRepository _userRepository;
 
-    public CreateUserTaskDTOValidator(IUserRepository userRepository)
+    public CreateUserTaskDtoValidator(IUserRepository userRepository)
     {
         _userRepository = userRepository;
 

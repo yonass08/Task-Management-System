@@ -6,9 +6,9 @@ public class CheckList: BaseDomainEntity
 
     public string Description { get; set; }
 
-    public int TaskId { get; set; }
+    public int UserTaskId { get; set; }
 
     public Status Status { get; set; } = Status.NotStarted;
 
-    public virtual Task Task { get; set; }
+    public virtual UserTask UserTask { get; set; }
 }

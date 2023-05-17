@@ -1,6 +1,6 @@
 namespace TaskManagementSystem.Domain;
 
-public class UserTask
+public class UserTask: BaseDomainEntity
 {
     public string Title { get; set; }
 

@@ -8,7 +8,7 @@ public class UserTask
 
     public int UserId { get; set; }
 
-    public Status Status { get; set; }
+    public Status Status { get; set; } = Status.NotStarted;
 
     public DateTime StartDate { get; set; }
     

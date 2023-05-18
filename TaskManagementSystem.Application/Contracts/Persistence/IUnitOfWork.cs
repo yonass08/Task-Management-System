@@ -3,11 +3,11 @@ namespace TaskManagementSystem.Application.Contracts.Persistence;
 public interface IUnitOfWork : IDisposable
 {
  
-    IUserRepository UserRepository {get; set;}
+    IUserRepository UserRepository {get;}
 
-    IUserTaskRepository UserTaskRepository {get; set;}
+    IUserTaskRepository UserTaskRepository {get;}
 
-    ICheckListRepository CheckListRepository {get; set;}
+    ICheckListRepository CheckListRepository {get;}
     
     Task <int> Save();
 

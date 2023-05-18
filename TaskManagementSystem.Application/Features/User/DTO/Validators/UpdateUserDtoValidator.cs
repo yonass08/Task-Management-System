@@ -13,6 +13,8 @@ public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
         RuleFor(x => x.Id)
             .GreaterThan(0).WithMessage("Id must be greater than zero.")
             .MustAsync(Exist).WithMessage("User does not exist.");
+        RuleFor(x => x.FullName)
+            .NotEmpty().WithMessage("FullName can't be empty");
 
     }
 

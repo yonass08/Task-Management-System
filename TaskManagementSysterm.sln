@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagementSystem.Persis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagementSystem.Api", "TaskManagementSystem.Api\TaskManagementSystem.Api.csproj", "{BEFDD6F5-CA97-43E4-A8B6-55C47CF6F09F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagementSystem.Tests", "TaskManagementSystem.Tests\TaskManagementSystem.Tests.csproj", "{1ED6E073-8E65-49D8-B0F0-0DFD726EC379}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{BEFDD6F5-CA97-43E4-A8B6-55C47CF6F09F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFDD6F5-CA97-43E4-A8B6-55C47CF6F09F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEFDD6F5-CA97-43E4-A8B6-55C47CF6F09F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED6E073-8E65-49D8-B0F0-0DFD726EC379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED6E073-8E65-49D8-B0F0-0DFD726EC379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED6E073-8E65-49D8-B0F0-0DFD726EC379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED6E073-8E65-49D8-B0F0-0DFD726EC379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

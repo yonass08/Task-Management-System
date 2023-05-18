@@ -5,7 +5,7 @@ using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Features.CheckList.DTO;
 
-namespace TaskManagementSystem.Application.Features.User.CQRS.Handlers.Queries;
+namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Handlers.Queries;
 
 public class GetCheckListListQueryHandler : IRequestHandler<GetCheckListListQuery, List<GetCheckListListDto>>
 {

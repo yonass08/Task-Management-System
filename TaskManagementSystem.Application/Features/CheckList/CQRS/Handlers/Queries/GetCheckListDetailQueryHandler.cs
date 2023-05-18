@@ -5,7 +5,7 @@ using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Features.CheckList.DTO;
 
-namespace TaskManagementSystem.Application.Features.User.CQRS.Handlers.Queries;
+namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Handlers.Queries;
 
 
 public class GetCheckListDetailQueryHandler : IRequestHandler<GetCheckListDetailQuery, GetCheckListDetailDto>

@@ -5,7 +5,7 @@ using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Commands;
 using TaskManagementSystem.Application.Features.CheckList.DTO.Validators;
 
-namespace TaskManagementSystem.Application.Features.CheckListStatus.CQRS.Handlers.Commands;
+namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Handlers.Commands;
 
 public class UpdateCheckListStatusCommandHandler : IRequestHandler<UpdateCheckListStatusCommand, Unit>
 {

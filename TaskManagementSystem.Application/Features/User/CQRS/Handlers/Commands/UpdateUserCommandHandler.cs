@@ -33,6 +33,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
             throw new ValidationException(validationResult);
     
         var user = await UnitOfWork.UserRepository.Get(request.updateUserDto.Id);
+        _mapper.Map(request.updateUserDto, user);
         await UnitOfWork.UserRepository.Update(user);
 
         if (await UnitOfWork.Save() < 0)

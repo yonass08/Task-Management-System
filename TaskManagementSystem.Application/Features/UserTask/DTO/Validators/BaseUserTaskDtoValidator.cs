@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO.Validators;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO.Validators;
 
 public class BaseUserTaskValidator<T> : AbstractValidator<T> where T : BaseUserTaskDto
 {

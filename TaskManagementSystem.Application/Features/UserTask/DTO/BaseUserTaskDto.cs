@@ -1,6 +1,6 @@
 using TaskManagementSystem.Domain;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO;
 
 public abstract class BaseUserTaskDto
 {
@@ -9,6 +9,6 @@ public abstract class BaseUserTaskDto
     public string Description { get; set; }
 
     public DateTime StartDate { get; set; }
-    
+
     public DateTime EndDate { get; set; }
 }

@@ -1,7 +1,7 @@
 using FluentValidation;
 using TaskManagementSystem.Application.Contracts.Persistence;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO.Validators;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO.Validators;
 
 public class CreateUserTaskDtoValidator : BaseUserTaskValidator<CreateUserTaskDto>
 {

@@ -1,10 +1,10 @@
 using TaskManagementSystem.Domain;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO;
 
 public class UpdateUserTaskStatusDto
 {
-    public int Id {get; set;}
+    public int Id { get; set; }
 
     public Status Status { get; set; }
 

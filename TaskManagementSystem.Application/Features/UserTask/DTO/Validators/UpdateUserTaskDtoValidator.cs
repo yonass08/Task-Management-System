@@ -1,13 +1,13 @@
 using FluentValidation;
 using TaskManagementSystem.Application.Contracts.Persistence;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO.Validators;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO.Validators;
 
-public class DeleteUserTaskDtoValidator: AbstractValidator<DeleteUserTaskDto>
+public class UpdateUserTaskDtoValidator : BaseUserTaskValidator<UpdateUserTaskDto>
 {
     private IUserTaskRepository _userTaskRepository;
 
-    public DeleteUserTaskDtoValidator(IUserTaskRepository userTaskRepository)
+    public UpdateUserTaskDtoValidator(IUserTaskRepository userTaskRepository)
     {
         _userTaskRepository = userTaskRepository;
 
@@ -20,5 +20,4 @@ public class DeleteUserTaskDtoValidator: AbstractValidator<DeleteUserTaskDto>
     {
         return await _userTaskRepository.Exists(id);
     }
-    
 }

@@ -1,8 +1,8 @@
 using TaskManagementSystem.Domain;
 
-namespace TaskManagementSystem.Application.Features.Task.DTO;
+namespace TaskManagementSystem.Application.Features.UserTask.DTO;
 
-public class GetUserTaskListDto: BaseUserTaskDto
+public class GetUserTaskListDto : BaseUserTaskDto
 {
     public int UserId { get; set; }
 

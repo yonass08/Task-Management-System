@@ -5,7 +5,7 @@ using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Commands;
 using TaskManagementSystem.Application.Features.UserTask.DTO.Validators;
 
-namespace TaskManagementSystem.Application.Features.User.CQRS.Handlers.Commands;
+namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Handlers.Commands;
 
 public class CreateUserTaskCommandHandler : IRequestHandler<CreateUserTaskCommand, int>
 {

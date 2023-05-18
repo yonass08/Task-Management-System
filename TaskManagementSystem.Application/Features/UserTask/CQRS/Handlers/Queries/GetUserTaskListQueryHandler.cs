@@ -5,7 +5,7 @@ using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Features.UserTask.DTO;
 
-namespace TaskManagementSystem.Application.Features.User.CQRS.Handlers.Queries;
+namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Handlers.Queries;
 
 public class GetUserTaskListQueryHandler : IRequestHandler<GetUserTaskListQuery, List<GetUserTaskListDto>>
 {

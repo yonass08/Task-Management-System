@@ -36,21 +36,21 @@ public class MockCheckListRepository
 
         mockRepo.Setup(r => r.GetAll()).ReturnsAsync(CheckLists);
         
-        mockRepo.Setup(r => r.Add(It.IsAny<CheckList>())).ReturnsAsync((CheckList CheckList) =>
+        mockRepo.Setup(r => r.Add(It.IsAny<Domain.CheckList>())).ReturnsAsync((Domain.CheckList CheckList) =>
         {
             CheckList.Id = CheckLists.Count() + 1;
             CheckLists.Add(CheckList);
             return CheckList; 
         });
 
-        mockRepo.Setup(r => r.Update(It.IsAny<CheckList>())).Callback((CheckList CheckList) =>
+        mockRepo.Setup(r => r.Update(It.IsAny<Domain.CheckList>())).Callback((Domain.CheckList CheckList) =>
         {
             var newCheckLists = CheckLists.Where((r) => r.Id != CheckList.Id);
             CheckLists = newCheckLists.ToList();
             CheckLists.Add(CheckList);
         });
         
-        mockRepo.Setup(r => r.Delete(It.IsAny<CheckList>())).Callback((CheckList CheckList) =>
+        mockRepo.Setup(r => r.Delete(It.IsAny<Domain.CheckList>())).Callback((Domain.CheckList CheckList) =>
         
         {
             if (CheckLists.Exists(b => b.Id == CheckList.Id))

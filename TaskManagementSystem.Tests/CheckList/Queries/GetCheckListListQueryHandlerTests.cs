@@ -3,22 +3,22 @@ using Moq;
 using Shouldly;
 using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Exceptions;
-using TaskManagementSystem.Application.Features.UserTask.CQRS.Handlers.Queries;
-using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Queries;
+using TaskManagementSystem.Application.Features.CheckList.CQRS.Handlers.Queries;
+using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Profiles;
 using TaskManagementSystem.Tests.Mocks;
 
-namespace TaskManagementSystem.Tests.UserTask.Queries;
+namespace TaskManagementSystem.Tests.CheckList.Queries;
 
-public class GetUserTaskListQueryHandlerTests
+public class GetCheckListListQueryHandlerTests
 {
     private readonly IMapper _mapper;
     
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
-    private readonly GetUserTaskListQueryHandler _handler;
+    private readonly GetCheckListListQueryHandler _handler;
 
-    public GetUserTaskListQueryHandlerTests()
+    public GetCheckListListQueryHandlerTests()
     {
         _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
         
@@ -28,16 +28,16 @@ public class GetUserTaskListQueryHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new GetUserTaskListQueryHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new GetCheckListListQueryHandler(_mockUnitOfWork.Object, _mapper);
 
 
     }
 
     [Fact]
-    public async Task ShouldGetUserTaskList()
+    public async Task ShouldGetCheckListList()
     {
 
-        var result = await _handler.Handle(new GetUserTaskListQuery(), CancellationToken.None);
+        var result = await _handler.Handle(new GetCheckListListQuery(), CancellationToken.None);
         result.ShouldNotBe(null);
     }
        

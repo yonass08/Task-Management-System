@@ -3,22 +3,22 @@ using Moq;
 using Shouldly;
 using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Exceptions;
-using TaskManagementSystem.Application.Features.UserTask.CQRS.Handlers.Queries;
-using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Queries;
+using TaskManagementSystem.Application.Features.CheckList.CQRS.Handlers.Queries;
+using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Profiles;
 using TaskManagementSystem.Tests.Mocks;
 
-namespace TaskManagementSystem.Tests.UserTask.Queries;
+namespace TaskManagementSystem.Tests.CheckList.Queries;
 
-public class GetUserTaskDetailQueryHandlerTests
+public class GetCheckListDetailQueryHandlerTests
 {
     private readonly IMapper _mapper;
     
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
-    private readonly GetUserTaskDetailQueryHandler _handler;
+    private readonly GetCheckListDetailQueryHandler _handler;
 
-    public GetUserTaskDetailQueryHandlerTests()
+    public GetCheckListDetailQueryHandlerTests()
     {
         _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
         
@@ -28,16 +28,16 @@ public class GetUserTaskDetailQueryHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new GetUserTaskDetailQueryHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new GetCheckListDetailQueryHandler(_mockUnitOfWork.Object, _mapper);
 
 
     }
 
     [Fact]
-    public async Task ShouldGetUserTaskDetail_WhenIdExists()
+    public async Task ShouldGetCheckListDetail_WhenIdExists()
     {
 
-        var result = await _handler.Handle(new GetUserTaskDetailQuery() { Id = 1}, CancellationToken.None);
+        var result = await _handler.Handle(new GetCheckListDetailQuery() { Id = 1}, CancellationToken.None);
         result.ShouldNotBe(null);
     }
        
@@ -46,7 +46,7 @@ public class GetUserTaskDetailQueryHandlerTests
     public async Task ShouldThrowException_WhenIdDoesNotExist()
     {
         await Should.ThrowAsync<NotFoundException>(async () => 
-             await _handler.Handle(new GetUserTaskDetailQuery() { Id = 0}, CancellationToken.None)
+             await _handler.Handle(new GetCheckListDetailQuery() { Id = 0}, CancellationToken.None)
         );
     }
 

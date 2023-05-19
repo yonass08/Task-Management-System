@@ -3,6 +3,7 @@ using TaskManagementSystem.Application.Features.CheckList.DTO;
 using TaskManagementSystem.Application.Features.UserTask.DTO;
 using TaskManagementSystem.Application.Features.User.DTO;
 using TaskManagementSystem.Domain;
+using TaskManagementSystem.Application.Models.Identity;
 
 namespace TaskManagementSystem.Application.Profiles;
 
@@ -29,6 +30,11 @@ public class MappingProfile : Profile
         CreateMap<CheckList, UpdateCheckListDto>().ReverseMap();
         CreateMap<CheckList, GetCheckListListDto>().ReverseMap();
         CreateMap<CheckList, GetCheckListDetailDto>().ReverseMap();
+        #endregion
+
+        #region  Identity
+        CreateMap<RegisterDto, RegistrationModel>().ReverseMap();
+        CreateMap<RegisterDto, CreateUserDto>().ReverseMap();
         #endregion
 
     }

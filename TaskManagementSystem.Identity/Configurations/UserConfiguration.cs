@@ -14,9 +14,9 @@ public class UserConfiguration : IEntityTypeConfiguration<TaskManagementSystemUs
             new TaskManagementSystemUser
             {
                 Id = "4000b844-74ca-479b-badb-4f41850ae07e",
-                Email = "Admin@HR.com",
+                Email = "Admin@TMS.com",
                 NormalizedEmail = "ADMIN@HR.COM",
-                UserName = "Admin@HR.com",
+                UserName = "Admin@TMS.com",
                 NormalizedUserName = "ADMIN@HR.COM",
                 PasswordHash = hasher.HashPassword(null, "P@ssword1"),
                 EmailConfirmed = false
@@ -25,9 +25,9 @@ public class UserConfiguration : IEntityTypeConfiguration<TaskManagementSystemUs
             new TaskManagementSystemUser
             {
                 Id = "efa06a55-d0cc-4e01-abbf-870f21d91441",
-                Email = "User@HR.com",
+                Email = "User@TMS.com",
                 NormalizedEmail = "USER@HR.COM",
-                UserName = "User@HR.com",
+                UserName = "User@TMS.com",
                 NormalizedUserName = "USER@HR.COM",
                 PasswordHash = hasher.HashPassword(null, "P@ssword2"),
                 EmailConfirmed = false

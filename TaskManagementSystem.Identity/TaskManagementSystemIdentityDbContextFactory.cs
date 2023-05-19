@@ -15,7 +15,7 @@ public class TaskManagementSystemIdentityDbContextFactory : IDesignTimeDbContext
             .Build();
 
         var builder = new DbContextOptionsBuilder<TaskManagementSystemIdentityDbContext>();
-        var connectionString = configuration.GetConnectionString("TaskMangementSystemIdentityConnectionString");
+        var connectionString = configuration.GetConnectionString("TaskManagementSystemIdentityConnectionString");
 
         builder.UseNpgsql(connectionString);
 

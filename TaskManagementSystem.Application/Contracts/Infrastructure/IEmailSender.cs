@@ -4,5 +4,5 @@ namespace TaskManagementSystem.Application.Contracts.Identity;
 
 public interface IEmailSender
 {
-    Task<Email> sendEmail(Email email);
+    Task sendEmail(Email email);
 }

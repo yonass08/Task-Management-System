@@ -1,10 +1,10 @@
-using TaskMangementSystem.Application.Contracts.Identity;
-using TaskMangementSystem.Application.Models.Mail;
-using TaskMangementSystem.Infrastructure.Mail;
+using TaskManagementSystem.Application.Contracts.Identity;
+using TaskManagementSystem.Application.Models.Mail;
+using TaskManagementSystem.Infrastructure.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TaskMangementSystem.Infrastructure;
+namespace TaskManagementSystem.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {

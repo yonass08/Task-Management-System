@@ -49,22 +49,14 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse> Login(LoginModel request)
     {
-        Result<LoginResponse> result = new Result<LoginResponse>();
+
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with given Email({request.Email}) doesn't exist");
-            return result;
-        }
+            throw new NotFoundException(nameof(TaskManagementSystemUser), request.Email);
 
         var res = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
         if (!res.Succeeded)
-        {
-            result.Success = false;
-            result.Errors.Add($"Incorrect password");
-            return result;
-        }
+            throw new BadRequestException("Incorrect Password");
 
         JwtSecurityToken token = await GenerateToken(user);
 
@@ -76,8 +68,7 @@ public class AuthService : IAuthService
             Token = new JwtSecurityTokenHandler().WriteToken(token)
         };
 
-        result.Value = response;
-        return result;
+        return response;
     }
 
 
@@ -117,14 +108,9 @@ public class AuthService : IAuthService
 
     public async Task<RegistrationResponse> Register(RegistrationModel request)
     {
-        var result = new Result<RegistrationResponse>();
         var existingUser = await _userManager.FindByEmailAsync(request.Email);
         if (existingUser != null)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with given Email({request.Email}) already exists");
-            return result;
-        }
+            throw new BadRequestException($"User with given Email({request.Email}) already exists");
 
         var user = new TaskManagementSystemUser
         {
@@ -137,55 +123,42 @@ public class AuthService : IAuthService
 
         if (!createResult.Succeeded)
         {
-            result.Success = false;
+            var exception = new BadRequestException("Error occured while creating user");
             foreach (var Error in createResult.Errors)
             {
-                result.Errors.Add(Error.Description);
+                exception.Errors.Add(Error.Description);
             }
-            return result;
+            throw exception;
         }
 
         var createdUser = await _userManager.FindByNameAsync(request.UserName);
         await _userManager.AddToRoleAsync(createdUser, "User");
 
-        var confirmResult = await sendConfirmEmailLink(createdUser.Email);
-        if (!confirmResult.Success)
+        try
         {
-            result.Message += "\n Warning: Email not confirmed\n";
-            result.Errors.AddRange(confirmResult.Errors);
+            await sendConfirmEmailLink(createdUser.Email);
+        }
+        catch(Exception ex)
+        {
+
         }
 
-        result.Success = true;
-        result.Value = new RegistrationResponse
+        return new RegistrationResponse
         {
             UserId = createdUser.Id,
             email = createdUser.Email
         };
 
-        return result;
     }
 
     public async Task<string> sendConfirmEmailLink(string Email)
     {
-        var result = new Result<string>();
-
         var user = await _userManager.FindByEmailAsync(Email);
         if (user == null)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with given email ({Email}) not found!");
-            result.Message = "Could not find user!";
-            return result;
-        }
-
+            throw new BadRequestException($"User with given Email({Email}) doesn't exists");
 
         if (user.EmailConfirmed)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with given email ({Email}) has already confirmed their email!");
-            result.Message = "User has already confirmed email!";
-            return result;
-        }
+            throw new BadRequestException($"User with given Email({Email}) has confirmed the email");
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         string connectionLink = _serverSettings.BaseApiUrl + $"Auth/Confirm/?email={HttpUtility.UrlEncode(Email)}&token={HttpUtility.UrlEncode(token)}";
@@ -197,39 +170,28 @@ public class AuthService : IAuthService
             Body = $"Email Confirmation link: {connectionLink}\n token: {token}"
         };
 
-        var emailResult = await _emailSender.sendEmail(message);
-        if (!emailResult.Success)
+        try
         {
-            result.Success = false;
-            result.Errors.AddRange(emailResult.Errors);
-            result.Message = "Could not send Email!";
-            return result;
+            await _emailSender.sendEmail(message);
+        }
+        catch(Exception ex)
+        {
+
         }
 
-        result.Success = true;
-        result.Value = Email;
-        result.Message = "Email Confirmation link successfully sent!";
-
-        return result;
+        return Email;
     }
 
     public async Task<string> ForgotPassword(string Email)
     {
-        var result = new Result<string>();
         var user = await _userManager.FindByEmailAsync(Email);
         if (user == null)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with email ({Email}) not found");
-            return result;
-        }
+            throw new BadRequestException($"User with given Email({Email}) doesn't exists");
+        
 
         if (!user.EmailConfirmed)
-        {
-            result.Success = false;
-            result.Errors.Add($"User has not confirmed the email ({Email})");
-            return result;
-        }
+            throw new BadRequestException($"User with given Email({Email}) hasn't confirmed the email");
+        
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         string resetLink = "# todo: A page where they reset password";
@@ -241,45 +203,36 @@ public class AuthService : IAuthService
             Body = $"Password Reset link: {resetLink} \n token: {token}"
         };
 
-        var emailResult = await _emailSender.sendEmail(message);
-        if (!emailResult.Success)
+        try
         {
-            result.Success = false;
-            result.Errors.AddRange(emailResult.Errors);
-            return result;
+            await _emailSender.sendEmail(message);
+        }
+        catch(Exception ex)
+        {
+
         }
 
-        result.Success = true;
-        result.Value = Email;
-        return result;
-
+        return Email;
     }
 
     public async Task<string> ResetPassword(ResetPasswordModel resetPasswordModel)
     {
-        var result = new Result<string>();
         var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
         if (user == null)
-        {
-            result.Success = false;
-            result.Errors.Add($"User with email ({resetPasswordModel.Email}) not found");
-            return result;
-        }
+            throw new BadRequestException($"User with given Email({resetPasswordModel.Email}) doesn't exists");
 
         var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
         if (!resetPassResult.Succeeded)
         {
-            result.Success = false;
+            var exception = new BadRequestException("Error occured while creating user");
             foreach (var Error in resetPassResult.Errors)
             {
-                result.Errors.Add(Error.Description);
+                exception.Errors.Add(Error.Description);
             }
-            return result;
+            throw exception;
         }
 
-        result.Success = true;
-        result.Value = resetPasswordModel.Email;
-        return result;
+        return  resetPasswordModel.Email;
     }
 
     public async Task<bool> DeleteUser(string Email)

@@ -1,12 +1,10 @@
-using TaskMangementSystem.Application.Contracts.Identity;
-using TaskMangementSystem.Application.Models.Mail;
-using TaskMangementSystem.Application.Responses;
+using TaskManagementSystem.Application.Contracts.Identity;
+using TaskManagementSystem.Application.Models.Mail;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace TaskMangementSystem.Infrastructure.Mail;
+namespace TaskManagementSystem.Infrastructure.Mail;
 
 public class EmailSender : IEmailSender
 {
@@ -27,11 +25,8 @@ public class EmailSender : IEmailSender
         return emailMessage;
     }
 
-    public async Task<Result<Email>> sendEmail(Email email)
+    public async Task sendEmail(Email email)
     {
-        var result = new Result<Email>();
-        result.Success = true;
-
         using var client = new SmtpClient();
         try
         {
@@ -40,23 +35,12 @@ public class EmailSender : IEmailSender
             await client.AuthenticateAsync(_emailSettings.UserName, _emailSettings.Password);
             var sent = await client.SendAsync(CreateEmailMessage(email));
         }
-        catch (Exception ex)
-        {
-            //log an error message or throw an exception or both.
-            result.Success = false;
-            result.Errors.Add(ex.Message);
-
-        }
         finally
         {
             await client.DisconnectAsync(true);
             client.Dispose();
         }
 
-
-        if (result.Success)
-            result.Value = email;
-
-        return result;
+        return;
     }
 }

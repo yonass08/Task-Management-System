@@ -3,10 +3,11 @@ using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Queries;
 using TaskManagementSystem.Application.Features.UserTask.DTO;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManagementSystem.API.Controllers;
 
- 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UserTaskController : ControllerBase

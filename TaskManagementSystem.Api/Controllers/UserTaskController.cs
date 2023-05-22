@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManagementSystem.API.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UserTaskController : ControllerBase

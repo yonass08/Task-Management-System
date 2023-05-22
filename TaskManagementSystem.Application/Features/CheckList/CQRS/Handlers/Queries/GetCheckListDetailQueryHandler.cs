@@ -25,7 +25,7 @@ public class GetCheckListDetailQueryHandler : IRequestHandler<GetCheckListDetail
         if (Exists == false)
             throw new NotFoundException(nameof(Domain.CheckList), request.Id);
 
-        var CheckList = await _unitOfWork.CheckListRepository.Get(request.Id);
+        var CheckList = await _unitOfWork.CheckListRepository.GetWithDetails(request.Id);
         var CheckListDto = _mapper.Map<GetCheckListDetailDto>(CheckList);
         return CheckListDto;
     }

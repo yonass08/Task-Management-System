@@ -25,7 +25,7 @@ public class GetUserTaskDetailQueryHandler : IRequestHandler<GetUserTaskDetailQu
         if (Exists == false)
             throw new NotFoundException(nameof(Domain.UserTask), request.Id);
 
-        var userTask = await _unitOfWork.UserTaskRepository.Get(request.Id);
+        var userTask = await _unitOfWork.UserTaskRepository.GetWithDetails(request.Id);
         var userTaskDto = _mapper.Map<GetUserTaskDetailDto>(userTask);
         return userTaskDto;
     }

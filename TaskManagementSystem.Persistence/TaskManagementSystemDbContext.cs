@@ -22,6 +22,14 @@ public class TaskManagementSystemDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // ChangeTracker.LazyLoadingEnabled = false;
+
+        modelBuilder.Entity<UserTask>()
+        .HasMany(u => u.CheckLists)
+        .WithOne(c => c.UserTask)
+        .HasForeignKey(c => c.UserTaskId)
+        .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TaskManagementSystemDbContext).Assembly);
     }
 

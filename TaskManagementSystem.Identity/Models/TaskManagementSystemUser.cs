@@ -4,4 +4,5 @@ namespace TaskManagementSystem.Identity.Models;
 
 public class TaskManagementSystemUser : IdentityUser
 {
+    public string FullName {get; set;}
 }

@@ -1,7 +1,6 @@
 using AutoMapper;
 using TaskManagementSystem.Application.Features.CheckList.DTO;
 using TaskManagementSystem.Application.Features.UserTask.DTO;
-using TaskManagementSystem.Application.Features.User.DTO;
 using TaskManagementSystem.Domain;
 using TaskManagementSystem.Application.Models.Identity;
 
@@ -11,12 +10,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        #region  User
-        CreateMap<User, CreateUserDto>().ReverseMap();
-        CreateMap<User, UpdateUserDto>().ReverseMap();
-        CreateMap<User, GetUserListDto>().ReverseMap();
-        CreateMap<User, GetUserDetailDto>().ReverseMap();
-        #endregion
 
         #region  UserTask
         CreateMap<UserTask, CreateUserTaskDto>().ReverseMap();
@@ -30,11 +23,6 @@ public class MappingProfile : Profile
         CreateMap<CheckList, UpdateCheckListDto>().ReverseMap();
         CreateMap<CheckList, GetCheckListListDto>().ReverseMap();
         CreateMap<CheckList, GetCheckListDetailDto>().ReverseMap();
-        #endregion
-
-        #region  Identity
-        CreateMap<RegisterDto, RegistrationModel>().ReverseMap();
-        CreateMap<RegisterDto, CreateUserDto>().ReverseMap();
         #endregion
 
     }

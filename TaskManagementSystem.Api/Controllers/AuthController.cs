@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.Application.Models.Identity;
 using TaskManagementSystem.Application.Contracts.Identity;
-using TaskManagementSystem.Application.Features.User.CQRS.Requests.Commands;
-using TaskManagementSystem.Application.Features.User.DTO;
 using MediatR;
 using AutoMapper;
 
@@ -33,22 +31,10 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("Register")]
-    public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegisterDto registerDto)
+    public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegistrationModel registrationModel)
     {
-        var response = await _authService.Register(_mapper.Map<RegistrationModel>(registerDto));
-        var command = new CreateUserCommand {createUserDto = _mapper.Map<CreateUserDto>(registerDto)};
-
-        try
-        {
-            var userResponse = await _mediator.Send(command);
-            return Ok(response);
-        }
-        catch(Exception e)
-        {
-            await _authService.DeleteUser(registerDto.Email);
-            throw e;
-        }
-        
+        var response = await _authService.Register(registrationModel);
+        return Ok(response);
     }
 
     [HttpGet]

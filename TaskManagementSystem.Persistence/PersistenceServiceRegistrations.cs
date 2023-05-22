@@ -15,7 +15,6 @@ namespace TaskManagementSystem.Persistence
             opt.UseNpgsql(configuration.GetConnectionString("TaskManagementSystemConnectionString")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserTaskRepository, UserTaskRepository>();
             services.AddScoped<ICheckListRepository, CheckListRepository>();
             

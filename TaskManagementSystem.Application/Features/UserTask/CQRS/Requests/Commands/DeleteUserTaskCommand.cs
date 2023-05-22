@@ -6,4 +6,7 @@ namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Comma
 public class DeleteUserTaskCommand: IRequest
 {
     public DeleteUserTaskDto deleteUserTaskDto {get; set;}
+
+    public string UserId {get; set;}
+
 }

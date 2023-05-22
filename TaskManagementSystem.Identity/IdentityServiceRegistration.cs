@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagementSystem.Application.Models.Identity;
+using TaskMangementSystem.Identity.Services;
 
 namespace TaskManagementSystem.Identity;
 
@@ -31,6 +32,8 @@ public static class IdentityServiceRegistration
         .AddDefaultTokenProviders();
 
         services.AddTransient<IAuthService, AuthService>();
+        services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IAuthorizationService, AuthorizationService>();
         services.Configure<DataProtectionTokenProviderOptions>(opt =>
                         opt.TokenLifespan = TimeSpan.FromHours(2));
 

@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+// app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseSwagger();

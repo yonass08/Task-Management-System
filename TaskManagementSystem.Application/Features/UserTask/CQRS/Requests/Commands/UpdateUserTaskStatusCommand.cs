@@ -7,4 +7,6 @@ public class UpdateUserTaskStatusCommand: IRequest
 {
     public UpdateUserTaskStatusDto updateUserTaskStatusDto {get; set;}
 
+    public string UserId {get; set;}
+
 }

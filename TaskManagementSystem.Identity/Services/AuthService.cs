@@ -85,10 +85,10 @@ public class AuthService : IAuthService
 
         var Claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("uid", user.Id)
+            new Claim(ClaimTypes.NameIdentifier, user.Id)
         }.Union(userClaims)
          .Union(roleClaims);
 
@@ -115,6 +115,7 @@ public class AuthService : IAuthService
         var user = new TaskManagementSystemUser
         {
             UserName = request.UserName,
+            FullName = request.FullName,
             Email = request.Email,
             EmailConfirmed = false
         };

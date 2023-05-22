@@ -6,5 +6,7 @@ namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Queri
 public class GetUserTaskDetailQuery: IRequest<GetUserTaskDetailDto>
 {
     public int Id {get; set;}
+
+    public string UserId {get; set;}
     
 }

@@ -15,6 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<TaskManagementSystemUs
             {
                 Id = "4000b844-74ca-479b-badb-4f41850ae07e",
                 Email = "Admin@TMS.com",
+                FullName = "debebe",
                 NormalizedEmail = "ADMIN@HR.COM",
                 UserName = "Admin@TMS.com",
                 NormalizedUserName = "ADMIN@HR.COM",
@@ -26,6 +27,7 @@ public class UserConfiguration : IEntityTypeConfiguration<TaskManagementSystemUs
             {
                 Id = "efa06a55-d0cc-4e01-abbf-870f21d91441",
                 Email = "User@TMS.com",
+                FullName = "shelete",
                 NormalizedEmail = "USER@HR.COM",
                 UserName = "User@TMS.com",
                 NormalizedUserName = "USER@HR.COM",

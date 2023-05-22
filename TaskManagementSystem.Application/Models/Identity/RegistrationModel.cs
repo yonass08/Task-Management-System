@@ -9,6 +9,9 @@ public class RegistrationModel
     public string Email {get; set;} = "";
 
     [Required]
+    public string FullName {get; set;}
+
+    [Required]
     public string UserName {get; set;} = "";
 
     [Required]

@@ -8,7 +8,6 @@ namespace TaskManagementSystem.Persistence;
 public class TaskManagementSystemDbContext : DbContext
 {
     
-    public DbSet<User> Users { get; set; }
     public DbSet<UserTask> UserTasks { get; set; }
     public DbSet<CheckList> CheckLists { get; set; }
 

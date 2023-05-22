@@ -6,4 +6,6 @@ namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Comma
 public class CreateUserTaskCommand: IRequest<int>
 {
     public CreateUserTaskDto createUserTaskDto {get; set;}
+    public string UserId {get; set;}
+
 }

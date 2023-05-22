@@ -8,16 +8,4 @@ public interface IAuthService
 
     public Task<LoginResponse> Login(LoginModel request);
 
-    public Task<string> sendConfirmEmailLink(string Email);
-
-    public Task<string> ConfirmEmail(string token, string email);
-
-    public Task<string> ForgotPassword(string Email);
-
-    public Task<string> ResetPassword(ResetPasswordModel resetPasswordModel);
-
-    public Task<bool> DeleteUser(string Email);
-
-
-
 }

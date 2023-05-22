@@ -38,11 +38,16 @@ public class DeleteCheckListCommandHandlerTests
     public async Task ShouldDeleteCheckList_WhenIdExists()
     {
 
-        DeleteCheckListDto deleteCheckListDto = new() { Id = 1};
+        var command = new DeleteCheckListCommand()
+        {
+            UserId = "UserId",
+            deleteCheckListDto = new DeleteCheckListDto
+            {
+                Id = 1
+            }
+        };
         
-        var result = await _handler.Handle(new DeleteCheckListCommand() {  deleteCheckListDto =  deleteCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None);
-        
-        
+        var result = await _handler.Handle(command, CancellationToken.None);
         (await _mockUnitOfWork.Object.CheckListRepository.GetAll()).Count.ShouldBe(1);
 
     }
@@ -52,10 +57,16 @@ public class DeleteCheckListCommandHandlerTests
     public async Task ShouldThrowException_WhenIdDoesNotExist()
     {
         
-        DeleteCheckListDto deleteCheckListDto = new() { Id = 0 };
-        
+        var command = new DeleteCheckListCommand()
+        {
+            UserId = "UserId",
+            deleteCheckListDto = new DeleteCheckListDto
+            {
+                Id = 0
+            }
+        };
         await Should.ThrowAsync<ValidationException>(async () => 
-            await _handler.Handle(new DeleteCheckListCommand() { deleteCheckListDto =  deleteCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
+            await _handler.Handle(command, CancellationToken.None)
         );
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

@@ -15,8 +15,6 @@ public class CreateCheckListCommandHandlerTests
 {
     private readonly IMapper _mapper;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-    private readonly CreateCheckListDto _CheckListDto;
-    private readonly CreateCheckListDto _invalidCheckListDto;
 
     private readonly CreateCheckListCommandHandler _handler;
 
@@ -32,26 +30,23 @@ public class CreateCheckListCommandHandlerTests
         _mapper = mapperConfig.CreateMapper();
         _handler = new CreateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
-        _CheckListDto = new CreateCheckListDto
-        {
-            UserTaskId=1,
-            Title= "Do something",
-            Description = "this is the first checklist"
-
-        };
-
-        _invalidCheckListDto = new CreateCheckListDto
-        {
-            UserTaskId=1,
-            Title= "",
-            Description = "this is the first checklist"
-        };
     }
 
     [Fact]
     public async Task Valid_CheckList_Added()
     {
-        var result = await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _CheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441" }, CancellationToken.None);
+        var command = new CreateCheckListCommand()
+        {
+            UserId = "UserId",
+            createCheckListDto = new CreateCheckListDto
+            {
+                UserTaskId=1,
+                Title= "Do something",
+                Description = "this is the first checklist"
+            }
+        };
+
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();
 
@@ -64,8 +59,19 @@ public class CreateCheckListCommandHandlerTests
     public async Task InValid_CheckList_Added()
     {
 
+        var command = new CreateCheckListCommand()
+        {
+            UserId = "UserId",
+            createCheckListDto = new CreateCheckListDto
+            {
+                UserTaskId=1,
+                Title= "",
+                Description = "this is the first checklist"
+            }
+        };
+
         await Should.ThrowAsync<ValidationException>(async () => 
-            await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _invalidCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
+            await _handler.Handle(command, CancellationToken.None)
         );
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

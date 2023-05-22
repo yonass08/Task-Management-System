@@ -1,6 +1,5 @@
 using TaskManagementSystem.Application;
 using TaskManagementSystem.Persistence;
-using TaskManagementSystem.Infrastructure;
 using TaskManagementSystem.Identity;
 using Microsoft.OpenApi.Models;
 using TaskManagementSystem.Api.Middlewares;
@@ -11,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureIdentityServices(builder.Configuration);
-builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 AddSwaggerDoc(builder.Services);
 builder.Services.AddControllers();

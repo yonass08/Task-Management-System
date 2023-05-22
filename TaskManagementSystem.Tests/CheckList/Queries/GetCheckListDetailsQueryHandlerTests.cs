@@ -36,8 +36,14 @@ public class GetCheckListDetailQueryHandlerTests
     [Fact]
     public async Task ShouldGetCheckListDetail_WhenIdExists()
     {
+        var Query = new GetCheckListDetailQuery()
+        {
+             Id = 1,
+             UserId = "UserId"
+        };
 
-        var result = await _handler.Handle(new GetCheckListDetailQuery() { Id = 1, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None);
+
+        var result = await _handler.Handle(Query, CancellationToken.None);
         result.ShouldNotBe(null);
     }
        
@@ -45,8 +51,14 @@ public class GetCheckListDetailQueryHandlerTests
     [Fact]
     public async Task ShouldThrowException_WhenIdDoesNotExist()
     {
+        var Query = new GetCheckListDetailQuery()
+        {
+             Id = 0,
+             UserId = "UserId"
+        };
+
         await Should.ThrowAsync<NotFoundException>(async () => 
-             await _handler.Handle(new GetCheckListDetailQuery() { Id = 0, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
+             await _handler.Handle(Query, CancellationToken.None)
         );
     }
 

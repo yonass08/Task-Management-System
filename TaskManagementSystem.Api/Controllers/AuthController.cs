@@ -37,46 +37,4 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet]
-    [Route("ResendConfirmLink")]
-    public async Task<ActionResult<string>> ResendConfirmEmailLink(string email)
-    {
-        var response = await _authService.sendConfirmEmailLink(email);
-        return Ok(response);
-    }
-
-    [HttpGet]
-    [Route("Confirm")]
-    public async Task<ActionResult<string>> ConfirmEmail(string email, string token)
-    {
-        var response = await _authService.ConfirmEmail(token, email);
-        return Ok(response);
-        
-    }
-
-    [HttpGet]
-    [Route("ForgotPassword")]
-    public async Task<ActionResult<string>> ForgotPassword(string email)
-    {
-        var response = await _authService.ForgotPassword(email);
-        return Ok(response);
-        
-    }
-
-    [HttpPost]
-    [Route("ResetPassword")]
-    public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
-    {
-        var response = await _authService.ResetPassword(resetPasswordModel);
-        return Ok(response);
-        
-    }
-
-    [HttpDelete]
-    [Route("Delete")]
-    public async Task<ActionResult<bool>> Delete(string email)
-    {
-        var response = await _authService.DeleteUser(email);
-        return Ok(response);  
-    }
 }

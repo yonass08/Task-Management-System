@@ -30,7 +30,7 @@ public class CreateCheckListCommandHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new CreateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new CreateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
         _CheckListDto = new CreateCheckListDto
         {
@@ -51,7 +51,7 @@ public class CreateCheckListCommandHandlerTests
     [Fact]
     public async Task Valid_CheckList_Added()
     {
-        var result = await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _CheckListDto }, CancellationToken.None);
+        var result = await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _CheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441" }, CancellationToken.None);
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();
 
@@ -65,7 +65,7 @@ public class CreateCheckListCommandHandlerTests
     {
 
         await Should.ThrowAsync<ValidationException>(async () => 
-            await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _invalidCheckListDto}, CancellationToken.None)
+            await _handler.Handle(new CreateCheckListCommand() { createCheckListDto = _invalidCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
         );
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

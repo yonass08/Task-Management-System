@@ -6,4 +6,7 @@ namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Quer
 public class GetCheckListDetailQuery: IRequest<GetCheckListDetailDto>
 {
     public int Id {get; set;}
+
+    public string UserId {get; set;}
+
 }

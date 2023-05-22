@@ -24,14 +24,11 @@ public class GetUserTaskListQueryHandler : IRequestHandler<GetUserTaskListQuery,
 
     public async Task<List<GetUserTaskListDto>> Handle(GetUserTaskListQuery request, CancellationToken cancellationToken)
     {
-        var result = await _authService.IsAdmin(request.UserId);
-
-        if(result == false)
-            throw new UnauthorizedException($"route authorized only for admins");
-
         var userTasks = await _unitOfWork.UserTaskRepository.GetAll();
         var userTaskDtos = _mapper.Map<List<GetUserTaskListDto>>(userTasks);
-        return userTaskDtos;
+
+        var UserId = request.UserId;
+        return userTaskDtos.Where(u => u.UserId == UserId).ToList();
     }
 }
 

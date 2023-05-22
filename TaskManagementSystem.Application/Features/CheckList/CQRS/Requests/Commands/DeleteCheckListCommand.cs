@@ -6,4 +6,7 @@ namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Comm
 public class DeleteCheckListCommand: IRequest
 {
     public DeleteCheckListDto deleteCheckListDto {get; set;}
+
+    public string UserId {get; set;}
+
 }

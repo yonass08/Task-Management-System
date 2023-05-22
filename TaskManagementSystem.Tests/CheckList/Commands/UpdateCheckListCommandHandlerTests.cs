@@ -30,7 +30,7 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
             });
 
             _mapper = mapperConfig.CreateMapper();
-            _handler = new UpdateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper);
+            _handler = new UpdateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
             _CheckListDto = new UpdateCheckListDto
             {
@@ -50,7 +50,7 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
         [Fact]
         public async Task ShouldUpdate_WhenValidRequestMade()
         {
-            var result = await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _CheckListDto }, CancellationToken.None);
+            var result = await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _CheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None);
 
             var CheckList = await _mockUnitOfWork.Object.CheckListRepository.Get(_CheckListDto.Id);
 
@@ -66,7 +66,7 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
         public async Task ShouldThrowError_WhenInvalidRequestMade()
         {
             await Should.ThrowAsync<ValidationException>(async () => 
-                await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _invalidCheckListDto}, CancellationToken.None)
+                await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _invalidCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
             );
 
             var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

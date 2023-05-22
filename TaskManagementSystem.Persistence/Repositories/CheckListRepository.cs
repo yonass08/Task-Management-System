@@ -20,6 +20,8 @@ public class CheckListRepository : GenericRepository<CheckList>, ICheckListRepos
 
     public Task UpdateStatus(CheckList checkList, Status status)
     {
-        throw new NotImplementedException();
+        checkList.Status = status;
+        _dbContext.Entry(checkList).State = EntityState.Modified;
+        return _dbContext.SaveChangesAsync();
     }
 }

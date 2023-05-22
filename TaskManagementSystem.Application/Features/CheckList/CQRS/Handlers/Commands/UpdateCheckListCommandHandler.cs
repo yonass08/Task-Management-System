@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using TaskManagementSystem.Application.Contracts.Identity;
 using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Commands;
@@ -13,9 +14,12 @@ public class UpdateCheckListCommandHandler : IRequestHandler<UpdateCheckListComm
 
     private readonly IMapper _mapper;
 
-    public UpdateCheckListCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IAuthorizationService _authService;
+
+    public UpdateCheckListCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authorizationService)
     {
         _unitOfWork = unitOfWork;
+        _authService = authorizationService;
         _mapper = mapper;
     }
 
@@ -32,6 +36,12 @@ public class UpdateCheckListCommandHandler : IRequestHandler<UpdateCheckListComm
             throw new ValidationException(validationResult);
     
         var CheckList = await UnitOfWork.CheckListRepository.Get(request.updateCheckListDto.Id);
+        var UserTask = await _unitOfWork.UserTaskRepository.Get(CheckList.UserTaskId);
+        
+        var result = await _authService.UserTaskBelongsToUser(UserTask, request.UserId);
+        if(result == false)
+            throw new UnauthorizedException("Task doesn't belong to you");
+            
         _mapper.Map(request.updateCheckListDto, CheckList);
         await UnitOfWork.CheckListRepository.Update(CheckList);
 

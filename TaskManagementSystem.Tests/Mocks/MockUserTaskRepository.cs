@@ -14,7 +14,7 @@ public class MockUserTaskRepository
             new ()
             {
                 Id=1,
-                UserId=1,
+                UserId="UserId",
                 Title= "Do something",
                 CreatedAt=DateTime.Now,
                 LastUpdated=DateTime.Now,
@@ -26,7 +26,7 @@ public class MockUserTaskRepository
             new ()
             {
                 Id=2,
-                UserId=1,
+                UserId="UserId",
                 Title= "Do something",
                 CreatedAt=DateTime.Now,
                 LastUpdated=DateTime.Now,
@@ -69,6 +69,11 @@ public class MockUserTaskRepository
 
         
         mockRepo.Setup(r => r.Get(It.IsAny<int>()))!.ReturnsAsync((int id) =>
+        {
+            return UserTasks.FirstOrDefault((r) => r.Id == id);
+        });
+
+        mockRepo.Setup(r => r.GetWithDetails(It.IsAny<int>()))!.ReturnsAsync((int id) =>
         {
             return UserTasks.FirstOrDefault((r) => r.Id == id);
         });

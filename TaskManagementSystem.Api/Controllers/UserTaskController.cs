@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using TaskManagementSystem.Application.Exceptions;
+using TaskManagementSystem.Domain;
 
 namespace TaskManagementSystem.API.Controllers;
 
@@ -27,7 +28,13 @@ public class UserTaskController : ControllerBase
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
-        var UserTasks = await _mediator.Send(new GetUserTaskListQuery(){UserId = userId});
+
+        var Query = new GetUserTaskListQuery()
+        {
+            UserId = userId
+        };
+
+        var UserTasks = await _mediator.Send(Query);
         return Ok(UserTasks);
     }
 
@@ -37,7 +44,14 @@ public class UserTaskController : ControllerBase
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
-        var UserTask = await _mediator.Send(new GetUserTaskDetailQuery { Id = id, UserId = userId});
+
+        var Query = new GetUserTaskDetailQuery()
+        {
+            UserId = userId,
+            Id = id
+        };
+
+        var UserTask = await _mediator.Send(Query);
         return Ok(UserTask);
     }
 
@@ -48,11 +62,13 @@ public class UserTaskController : ControllerBase
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
             
-        var response = await _mediator.Send(new CreateUserTaskCommand
-                {
-                    createUserTaskDto = UserTaskDto,
-                    UserId = userId
-                    });
+        var Command = new CreateUserTaskCommand()
+        {
+            createUserTaskDto = UserTaskDto,
+            UserId = userId
+        };
+        
+        var response = await _mediator.Send(Command);
         return Ok(response);   
     }
 
@@ -63,26 +79,34 @@ public class UserTaskController : ControllerBase
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
 
-        var response = await _mediator.Send(new UpdateUserTaskCommand
-                {
-                    updateUserTaskDto = UserTaskDto,
-                    UserId = userId
-                    });
+        var Command = new UpdateUserTaskCommand()
+        {
+            updateUserTaskDto = UserTaskDto,
+            UserId = userId
+        };
+        
+        var response = await _mediator.Send(Command);
         return NoContent(); 
     }
 
     [HttpPut("Status")]
-    public async Task<ActionResult> Put([FromBody] UpdateUserTaskStatusDto UserTaskDto)
+    public async Task<ActionResult> Put(int id,  string status)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
 
-        var response = await _mediator.Send(new UpdateUserTaskStatusCommand
-                {
-                    updateUserTaskStatusDto = UserTaskDto,
-                    UserId = userId
-                    });
+        var Command = new UpdateUserTaskStatusCommand()
+        {
+            updateUserTaskStatusDto = new UpdateUserTaskStatusDto()
+            {
+                Id = id,
+                Status = (Status)Enum.Parse(typeof(Status), status)
+            },
+            UserId = userId
+        };
+        
+        var response = await _mediator.Send(Command);
         return NoContent(); 
     }
 
@@ -93,11 +117,16 @@ public class UserTaskController : ControllerBase
         if (userId == null)
             throw new BadRequestException($"missing {userId}");
 
-        var UserTaskDto = new DeleteUserTaskDto
-        { 
-            Id = id,
+        var Command = new DeleteUserTaskCommand()
+        {
+            UserId = userId,
+            deleteUserTaskDto = new DeleteUserTaskDto()
+            {
+                Id = id
+            }
         };
-        await _mediator.Send(new DeleteUserTaskCommand{ deleteUserTaskDto = UserTaskDto, UserId = userId});
+        
+        var response = await _mediator.Send(Command);
         return NoContent(); 
     }
 }

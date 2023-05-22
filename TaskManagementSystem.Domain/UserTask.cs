@@ -14,7 +14,5 @@ public class UserTask: BaseDomainEntity
     
     public DateTime EndDate { get; set; }
 
-    // public  User User { get; set; }
-
     public  ICollection<CheckList> CheckLists { get; set; }
 }

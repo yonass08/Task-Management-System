@@ -29,7 +29,7 @@ public class DeleteCheckListCommandHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new DeleteCheckListCommandHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new DeleteCheckListCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
 
     }
@@ -40,7 +40,7 @@ public class DeleteCheckListCommandHandlerTests
 
         DeleteCheckListDto deleteCheckListDto = new() { Id = 1};
         
-        var result = await _handler.Handle(new DeleteCheckListCommand() {  deleteCheckListDto =  deleteCheckListDto}, CancellationToken.None);
+        var result = await _handler.Handle(new DeleteCheckListCommand() {  deleteCheckListDto =  deleteCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None);
         
         
         (await _mockUnitOfWork.Object.CheckListRepository.GetAll()).Count.ShouldBe(1);
@@ -55,7 +55,7 @@ public class DeleteCheckListCommandHandlerTests
         DeleteCheckListDto deleteCheckListDto = new() { Id = 0 };
         
         await Should.ThrowAsync<ValidationException>(async () => 
-            await _handler.Handle(new DeleteCheckListCommand() { deleteCheckListDto =  deleteCheckListDto}, CancellationToken.None)
+            await _handler.Handle(new DeleteCheckListCommand() { deleteCheckListDto =  deleteCheckListDto, UserId = "efa06a55-d0cc-4e01-abbf-870f21d91441"}, CancellationToken.None)
         );
 
         var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

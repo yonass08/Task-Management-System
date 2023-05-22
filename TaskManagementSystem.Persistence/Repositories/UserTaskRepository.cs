@@ -23,6 +23,8 @@ public class UserTaskRepository : GenericRepository<UserTask>, IUserTaskReposito
 
     public Task UpdateStatus(UserTask userTask, Status status)
     {
-        throw new NotImplementedException();
+        userTask.Status = status;
+        _dbContext.Entry(userTask).State = EntityState.Modified;
+        return _dbContext.SaveChangesAsync();
     }
 }

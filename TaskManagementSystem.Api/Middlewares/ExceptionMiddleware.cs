@@ -50,6 +50,9 @@ public class ExceptionMiddleware
             case ActionNotPerfomedException actionNotPerfomedException:
                 statusCode = HttpStatusCode.InternalServerError;
                 break;
+            case UnauthorizedException unauthorizedException:
+                statusCode = HttpStatusCode.Unauthorized;
+                break;
             default:
                 break;
         }

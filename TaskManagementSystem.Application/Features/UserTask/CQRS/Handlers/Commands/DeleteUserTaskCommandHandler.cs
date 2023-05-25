@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using TaskManagementSystem.Application.Contracts.Identity;
 using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Commands;
@@ -13,11 +14,15 @@ public class DeleteUserTaskCommandHandler : IRequestHandler<DeleteUserTaskComman
 
     private readonly IMapper _mapper;
 
-    public DeleteUserTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IAuthorizationService _authService;
+
+    public DeleteUserTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authService)
     {
         _unitOfWork = unitOfWork;
+        _authService = authService;
         _mapper = mapper;
     }
+
 
     public async Task<Unit> Handle(DeleteUserTaskCommand request, CancellationToken cancellationToken)
     {
@@ -30,6 +35,11 @@ public class DeleteUserTaskCommandHandler : IRequestHandler<DeleteUserTaskComman
             throw new ValidationException(validationResult);
     
         var UserTask = await _unitOfWork.UserTaskRepository.Get(request.deleteUserTaskDto.Id);
+        var result = await _authService.UserTaskBelongsToUser(UserTask, request.UserId);
+
+        if(result == false)
+            throw new UnauthorizedException($"ac = {UserTask.UserId} and {request.UserId}");
+        
         await _unitOfWork.UserTaskRepository.Delete(UserTask);
 
         if (await _unitOfWork.Save() < 0)

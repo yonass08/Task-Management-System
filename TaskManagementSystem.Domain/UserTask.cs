@@ -6,7 +6,7 @@ public class UserTask: BaseDomainEntity
 
     public string Description { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public Status Status { get; set; } = Status.NotStarted;
 
@@ -14,7 +14,5 @@ public class UserTask: BaseDomainEntity
     
     public DateTime EndDate { get; set; }
 
-    public virtual User User { get; set; }
-
-    public virtual ICollection<CheckList> CheckLists { get; set; }
+    public  ICollection<CheckList> CheckLists { get; set; }
 }

@@ -15,9 +15,6 @@ namespace TaskManagementSystem.Tests.UserTask.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-        private readonly UpdateUserTaskDto _UserTaskDto;
-        private readonly UpdateUserTaskDto _invalidUserTaskDto;
-
         private readonly UpdateUserTaskCommandHandler _handler;
 
         public UpdateUserTaskCommandHandlerTests()
@@ -30,9 +27,14 @@ namespace TaskManagementSystem.Tests.UserTask.Commands
             });
 
             _mapper = mapperConfig.CreateMapper();
-            _handler = new UpdateUserTaskCommandHandler(_mockUnitOfWork.Object, _mapper);
+            _handler = new UpdateUserTaskCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
-            _UserTaskDto = new UpdateUserTaskDto
+        }
+
+        [Fact]
+        public async Task ShouldUpdate_WhenValidRequestMade()
+        {
+            var UserTaskDto = new UpdateUserTaskDto
             {
                 Id = 1,
                 Title= "Do something",
@@ -41,27 +43,20 @@ namespace TaskManagementSystem.Tests.UserTask.Commands
                 EndDate=DateTime.MaxValue
             };
 
-            _invalidUserTaskDto = new UpdateUserTaskDto
+            var command = new UpdateUserTaskCommand()
             {
-                Id = 1,
-                Title= "",
-                Description = "this is the first UserTask",
-                StartDate=DateTime.Now,
-                EndDate=DateTime.MaxValue
+                updateUserTaskDto = UserTaskDto, 
+                UserId = "UserId"
             };
-        }
 
-        [Fact]
-        public async Task ShouldUpdate_WhenValidRequestMade()
-        {
-            var result = await _handler.Handle(new UpdateUserTaskCommand() { updateUserTaskDto = _UserTaskDto }, CancellationToken.None);
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-            var UserTask = await _mockUnitOfWork.Object.UserTaskRepository.Get(_UserTaskDto.Id);
+            var UserTask = await _mockUnitOfWork.Object.UserTaskRepository.Get(UserTaskDto.Id);
 
-            UserTask.Title.ShouldBe(_UserTaskDto.Title);
-            UserTask.Description.ShouldBe(_UserTaskDto.Description);
-            UserTask.StartDate.ShouldBe(_UserTaskDto.StartDate);
-            UserTask.EndDate.ShouldBe(_UserTaskDto.EndDate);
+            UserTask.Title.ShouldBe(UserTaskDto.Title);
+            UserTask.Description.ShouldBe(UserTaskDto.Description);
+            UserTask.StartDate.ShouldBe(UserTaskDto.StartDate);
+            UserTask.EndDate.ShouldBe(UserTaskDto.EndDate);
 
             var UserTasks = await _mockUnitOfWork.Object.UserTaskRepository.GetAll();
 
@@ -71,8 +66,23 @@ namespace TaskManagementSystem.Tests.UserTask.Commands
         [Fact]
         public async Task ShouldThrowError_WhenInvalidRequestMade()
         {
+            var UserTaskDto = new UpdateUserTaskDto
+            {
+                Id = 0,
+                Title= "Do something",
+                Description = "this is the first UserTask",
+                StartDate=DateTime.Now,
+                EndDate=DateTime.Now
+            };
+
+            var command = new UpdateUserTaskCommand()
+            {
+                updateUserTaskDto = UserTaskDto, 
+                UserId = "UserId"
+            };
+
             await Should.ThrowAsync<ValidationException>(async () => 
-                await _handler.Handle(new UpdateUserTaskCommand() { updateUserTaskDto = _invalidUserTaskDto}, CancellationToken.None)
+                await _handler.Handle(command, CancellationToken.None)
             );
 
             var UserTask = await _mockUnitOfWork.Object.UserTaskRepository.GetAll();

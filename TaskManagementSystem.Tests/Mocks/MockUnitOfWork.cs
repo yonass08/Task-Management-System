@@ -8,11 +8,9 @@ namespace TaskManagementSystem.Tests.Mocks
         public static Mock<IUnitOfWork> GetUnitOfWork()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            var mockUserRepo = MockUserRepository.GetUserRepository();
             var mockUserTaskRepo = MockUserTaskRepository.GetUserTaskRepository();
             var mockCheckListRepo = MockCheckListRepository.GetCheckListRepository();
             
-            mockUnitOfWork.Setup(r => r.UserRepository).Returns(mockUserRepo.Object);
             mockUnitOfWork.Setup(r => r.UserTaskRepository).Returns(mockUserTaskRepo.Object);
             mockUnitOfWork.Setup(r=>r.CheckListRepository).Returns(mockCheckListRepo.Object);
 

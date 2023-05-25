@@ -5,7 +5,7 @@ public class UnitOfWork : IUnitOfWork
 {
 
     private readonly TaskManagementSystemDbContext _context;
-    private IUserRepository _userRepository;
+
     private IUserTaskRepository _userTaskRepository;
     private ICheckListRepository _checkListRepository;
 
@@ -15,15 +15,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    IUserRepository IUnitOfWork.UserRepository 
-    { 
-        get 
-        {
-            if (_userRepository == null)
-                _userRepository = new UserRepository(_context);
-            return _userRepository;
-        } 
-    }
+
 
     IUserTaskRepository IUnitOfWork.UserTaskRepository 
     { 

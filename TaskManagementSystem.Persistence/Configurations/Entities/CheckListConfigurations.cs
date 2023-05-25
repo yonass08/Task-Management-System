@@ -17,7 +17,8 @@ public class CheckListConfiguration: IEntityTypeConfiguration<CheckList>
                     Title= "Do something",
                     CreatedAt=DateTime.Now,
                     LastUpdated=DateTime.Now,
-                    Description = "this is the first checklist"
+                    Description = "this is the first checklist",
+                    Status = Status.NotStarted
                 },
 
                 new CheckList
@@ -27,7 +28,8 @@ public class CheckListConfiguration: IEntityTypeConfiguration<CheckList>
                     Title= "Do something",
                     CreatedAt=DateTime.Now,
                     LastUpdated=DateTime.Now,
-                    Description = "this is the second checklist"
+                    Description = "this is the second checklist",
+                    Status = Status.InProgress
                 }
             );
     }

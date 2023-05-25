@@ -29,7 +29,7 @@ public class DeleteUserTaskCommandHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new DeleteUserTaskCommandHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new DeleteUserTaskCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
 
     }
@@ -38,9 +38,15 @@ public class DeleteUserTaskCommandHandlerTests
     public async Task ShouldDeleteUserTask_WhenIdExists()
     {
 
-        DeleteUserTaskDto deleteUserTaskDto = new() { Id = 1};
+        DeleteUserTaskDto UserTaskDto = new() { Id = 1};
+
+        var command = new DeleteUserTaskCommand()
+        {
+            deleteUserTaskDto = UserTaskDto, 
+            UserId = "UserId"
+        };
         
-        var result = await _handler.Handle(new DeleteUserTaskCommand() {  deleteUserTaskDto =  deleteUserTaskDto}, CancellationToken.None);
+        var result = await _handler.Handle(command, CancellationToken.None);
         
         
         (await _mockUnitOfWork.Object.UserTaskRepository.GetAll()).Count.ShouldBe(1);
@@ -52,10 +58,16 @@ public class DeleteUserTaskCommandHandlerTests
     public async Task ShouldThrowException_WhenIdDoesNotExist()
     {
         
-        DeleteUserTaskDto deleteUserTaskDto = new() { Id = 0 };
+        DeleteUserTaskDto UserTaskDto = new() { Id = 0 };
         
+        var command = new DeleteUserTaskCommand()
+        {
+            deleteUserTaskDto = UserTaskDto, 
+            UserId = "UserId"
+        };
+
         await Should.ThrowAsync<ValidationException>(async () => 
-            await _handler.Handle(new DeleteUserTaskCommand() { deleteUserTaskDto =  deleteUserTaskDto}, CancellationToken.None)
+            await _handler.Handle(command, CancellationToken.None)
         );
 
         var UserTask = await _mockUnitOfWork.Object.UserTaskRepository.GetAll();

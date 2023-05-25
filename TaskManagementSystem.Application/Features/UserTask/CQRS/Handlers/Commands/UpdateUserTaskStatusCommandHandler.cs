@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using TaskManagementSystem.Application.Contracts.Identity;
 using TaskManagementSystem.Application.Contracts.Persistence;
 using TaskManagementSystem.Application.Exceptions;
 using TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Commands;
@@ -13,12 +14,14 @@ public class UpdateUserTaskStatusCommandHandler : IRequestHandler<UpdateUserTask
 
     private readonly IMapper _mapper;
 
-    public UpdateUserTaskStatusCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IAuthorizationService _authService;
+
+    public UpdateUserTaskStatusCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authService)
     {
         _unitOfWork = unitOfWork;
+        _authService = authService;
         _mapper = mapper;
     }
-
     public IUnitOfWork UnitOfWork => _unitOfWork;
 
     public async Task<Unit> Handle(UpdateUserTaskStatusCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,11 @@ public class UpdateUserTaskStatusCommandHandler : IRequestHandler<UpdateUserTask
             throw new ValidationException(validationResult);
     
         var UserTask = await UnitOfWork.UserTaskRepository.Get(request.updateUserTaskStatusDto.Id);
+        var result = await _authService.UserTaskBelongsToUser(UserTask, request.UserId);
+
+        if(result == false)
+            throw new UnauthorizedException($"ac = {UserTask.UserId} and {request.UserId}");
+            
         await UnitOfWork.UserTaskRepository.UpdateStatus(UserTask, request.updateUserTaskStatusDto.Status);
 
         if (await UnitOfWork.Save() < 0)

@@ -28,7 +28,7 @@ public class GetCheckListListQueryHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new GetCheckListListQueryHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new GetCheckListListQueryHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
 
     }
@@ -36,9 +36,26 @@ public class GetCheckListListQueryHandlerTests
     [Fact]
     public async Task ShouldGetCheckListList()
     {
+        var Query = new GetCheckListListQuery()
+        {
+             UserId = "Admin"
+        };
 
-        var result = await _handler.Handle(new GetCheckListListQuery(), CancellationToken.None);
+        var result = await _handler.Handle(Query, CancellationToken.None);
         result.ShouldNotBe(null);
+    }
+
+    [Fact]
+    public async Task ShouldThrowUnauthorized()
+    {
+        var Query = new GetCheckListListQuery()
+        {
+             UserId = "UserId"
+        };
+
+        await Should.ThrowAsync<UnauthorizedException>(async () => 
+            await _handler.Handle(Query, CancellationToken.None)
+        );
     }
        
 

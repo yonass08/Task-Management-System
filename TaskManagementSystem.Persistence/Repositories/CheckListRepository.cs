@@ -13,8 +13,15 @@ public class CheckListRepository : GenericRepository<CheckList>, ICheckListRepos
         _dbContext = context;
     }
 
+    public async Task<CheckList> GetWithDetails(int id)
+    {
+        return await _dbContext.CheckLists.Include(c => c.UserTask).FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public Task UpdateStatus(CheckList checkList, Status status)
     {
-        throw new NotImplementedException();
+        checkList.Status = status;
+        _dbContext.Entry(checkList).State = EntityState.Modified;
+        return _dbContext.SaveChangesAsync();
     }
 }

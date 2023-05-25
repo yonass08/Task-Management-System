@@ -6,4 +6,7 @@ namespace TaskManagementSystem.Application.Features.UserTask.CQRS.Requests.Comma
 public class UpdateUserTaskCommand: IRequest
 {
     public UpdateUserTaskDto updateUserTaskDto {get; set;}
+
+    public string UserId {get; set;}
+
 }

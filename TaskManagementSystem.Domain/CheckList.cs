@@ -10,5 +10,5 @@ public class CheckList: BaseDomainEntity
 
     public Status Status { get; set; } = Status.NotStarted;
 
-    public virtual UserTask UserTask { get; set; }
+    public UserTask UserTask { get; set; }
 }

@@ -15,8 +15,6 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-        private readonly UpdateCheckListDto _CheckListDto;
-        private readonly UpdateCheckListDto _invalidCheckListDto;
 
         private readonly UpdateCheckListCommandHandler _handler;
 
@@ -30,32 +28,30 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
             });
 
             _mapper = mapperConfig.CreateMapper();
-            _handler = new UpdateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper);
+            _handler = new UpdateCheckListCommandHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
-            _CheckListDto = new UpdateCheckListDto
-            {
-                Id = 1,
-                Title= "Do something",
-                Description = "this is the first checklist"
-            };
-
-            _invalidCheckListDto = new UpdateCheckListDto
-            {
-                Id = 0,
-                Title= "Do something",
-                Description = "this is the first checklist"
-            };
         }
 
         [Fact]
         public async Task ShouldUpdate_WhenValidRequestMade()
         {
-            var result = await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _CheckListDto }, CancellationToken.None);
+            var command = new UpdateCheckListCommand()
+            {
+                UserId = "UserId",
+                updateCheckListDto = new UpdateCheckListDto
+                {
+                    Id = 1,
+                    Title= "Do something",
+                    Description = "this is the first checklist"
+                }
+            };
 
-            var CheckList = await _mockUnitOfWork.Object.CheckListRepository.Get(_CheckListDto.Id);
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-            CheckList.Title.ShouldBe(_CheckListDto.Title);
-            CheckList.Description.ShouldBe(_CheckListDto.Description);
+            var CheckList = await _mockUnitOfWork.Object.CheckListRepository.Get(1);
+
+            CheckList.Title.ShouldBe("Do something");
+            CheckList.Description.ShouldBe("this is the first checklist");
 
             var CheckLists = await _mockUnitOfWork.Object.CheckListRepository.GetAll();
 
@@ -65,8 +61,19 @@ namespace TaskManagementSystem.Tests.CheckList.Commands
         [Fact]
         public async Task ShouldThrowError_WhenInvalidRequestMade()
         {
+            var command = new UpdateCheckListCommand()
+            {
+                UserId = "UserId",
+                updateCheckListDto = new UpdateCheckListDto
+                {
+                    Id = 0,
+                    Title= "Do something",
+                    Description = "this is the first checklist"
+                }
+            };
+
             await Should.ThrowAsync<ValidationException>(async () => 
-                await _handler.Handle(new UpdateCheckListCommand() { updateCheckListDto = _invalidCheckListDto}, CancellationToken.None)
+                await _handler.Handle(command, CancellationToken.None)
             );
 
             var CheckList = await _mockUnitOfWork.Object.CheckListRepository.GetAll();

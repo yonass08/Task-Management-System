@@ -6,4 +6,7 @@ namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Comm
 public class UpdateCheckListCommand: IRequest
 {
     public UpdateCheckListDto updateCheckListDto {get; set;}
+
+    public string UserId {get; set;}
+
 }

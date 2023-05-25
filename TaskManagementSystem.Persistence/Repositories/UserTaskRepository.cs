@@ -13,8 +13,18 @@ public class UserTaskRepository : GenericRepository<UserTask>, IUserTaskReposito
         _dbContext = context;
     }
 
+    public async Task<UserTask> GetWithDetails(int id)
+    {
+        return await _dbContext.UserTasks
+            .Include(u => u.CheckLists)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+    }
+
     public Task UpdateStatus(UserTask userTask, Status status)
     {
-        throw new NotImplementedException();
+        userTask.Status = status;
+        _dbContext.Entry(userTask).State = EntityState.Modified;
+        return _dbContext.SaveChangesAsync();
     }
 }

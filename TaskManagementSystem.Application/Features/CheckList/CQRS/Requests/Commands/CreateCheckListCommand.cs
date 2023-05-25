@@ -6,4 +6,6 @@ namespace TaskManagementSystem.Application.Features.CheckList.CQRS.Requests.Comm
 public class CreateCheckListCommand: IRequest<int>
 {
     public CreateCheckListDto createCheckListDto {get; set;}
+
+    public string UserId {get; set;}
 }

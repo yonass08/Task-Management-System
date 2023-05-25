@@ -28,7 +28,7 @@ public class GetUserTaskDetailQueryHandlerTests
         });
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new GetUserTaskDetailQueryHandler(_mockUnitOfWork.Object, _mapper);
+        _handler = new GetUserTaskDetailQueryHandler(_mockUnitOfWork.Object, _mapper, MockAuthorizationService.GetAuthorizationService().Object);
 
 
     }
@@ -36,8 +36,13 @@ public class GetUserTaskDetailQueryHandlerTests
     [Fact]
     public async Task ShouldGetUserTaskDetail_WhenIdExists()
     {
+        var Query = new GetUserTaskDetailQuery()
+        {
+             Id = 1,
+             UserId = "UserId"
+        };
 
-        var result = await _handler.Handle(new GetUserTaskDetailQuery() { Id = 1}, CancellationToken.None);
+        var result = await _handler.Handle(Query, CancellationToken.None);
         result.ShouldNotBe(null);
     }
        
@@ -45,8 +50,14 @@ public class GetUserTaskDetailQueryHandlerTests
     [Fact]
     public async Task ShouldThrowException_WhenIdDoesNotExist()
     {
+        var Query = new GetUserTaskDetailQuery()
+        {
+             Id = 0,
+             UserId = "UserId"
+        };
+
         await Should.ThrowAsync<NotFoundException>(async () => 
-             await _handler.Handle(new GetUserTaskDetailQuery() { Id = 0}, CancellationToken.None)
+             await _handler.Handle(Query, CancellationToken.None)
         );
     }
 

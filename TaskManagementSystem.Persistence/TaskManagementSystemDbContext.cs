@@ -8,7 +8,6 @@ namespace TaskManagementSystem.Persistence;
 public class TaskManagementSystemDbContext : DbContext
 {
     
-    public DbSet<User> Users { get; set; }
     public DbSet<UserTask> UserTasks { get; set; }
     public DbSet<CheckList> CheckLists { get; set; }
 
@@ -22,6 +21,14 @@ public class TaskManagementSystemDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // ChangeTracker.LazyLoadingEnabled = false;
+
+        modelBuilder.Entity<UserTask>()
+        .HasMany(u => u.CheckLists)
+        .WithOne(c => c.UserTask)
+        .HasForeignKey(c => c.UserTaskId)
+        .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TaskManagementSystemDbContext).Assembly);
     }
 

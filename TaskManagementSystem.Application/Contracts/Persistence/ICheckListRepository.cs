@@ -6,4 +6,7 @@ public interface ICheckListRepository: IGenericRepository<CheckList>
 {
     Task UpdateStatus(CheckList checkList, Status status);
 
+    Task<CheckList> GetWithDetails(int id);
+
+
 }

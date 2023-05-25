@@ -7,14 +7,27 @@ namespace TaskManagementSystem.Tests.Mocks;
 public class MockCheckListRepository
 {
 
-     public static Mock<ICheckListRepository> GetCheckListRepository()
+    public static Mock<ICheckListRepository> GetCheckListRepository()
     {
+        var userTask = new Domain.UserTask()
+            {
+                Id=1,
+                UserId="UserId",
+                Title= "Do something",
+                CreatedAt=DateTime.Now,
+                LastUpdated=DateTime.Now,
+                Description = "this is the first UserTask",
+                StartDate=DateTime.Now,
+                EndDate=DateTime.MaxValue
+            };
+
         var CheckLists = new List<TaskManagementSystem.Domain.CheckList>
         {
             new ()
             {
                 Id=1,
                 UserTaskId=1,
+                UserTask = userTask,
                 Title= "Do something",
                 CreatedAt=DateTime.Now,
                 LastUpdated=DateTime.Now,
@@ -24,6 +37,7 @@ public class MockCheckListRepository
             new ()
             {
                 Id=2,
+                UserTask = userTask,
                 UserTaskId=1,
                 Title= "Do something",
                 CreatedAt=DateTime.Now,
@@ -65,6 +79,11 @@ public class MockCheckListRepository
 
         
         mockRepo.Setup(r => r.Get(It.IsAny<int>()))!.ReturnsAsync((int id) =>
+        {
+            return CheckLists.FirstOrDefault((r) => r.Id == id);
+        });
+
+        mockRepo.Setup(r => r.GetWithDetails(It.IsAny<int>()))!.ReturnsAsync((int id) =>
         {
             return CheckLists.FirstOrDefault((r) => r.Id == id);
         });
